@@ -1,11 +1,10 @@
 import java.util.Scanner;
 
-
 public class Echo {
     public static void main(String[] args) {
         String line;
         Scanner in = new Scanner(System.in);
-        String[] taskList = new String[100];
+        Task[] taskList = new Task[100];
         int listIndex = 0;
 
         System.out.println("____________________________________________________________");
@@ -25,16 +24,35 @@ public class Echo {
                     System.out.println("No tasks added");
                 } else {
                     for (int i = 0; i < listIndex; i++) {
-                        System.out.println(taskList[i]);
+                        System.out.print((i + 1) + ".");
+                        taskList[i].printTask();
                     }
                 }
+                System.out.println("____________________________________________________________");
+                continue;
+            } else if (line.toLowerCase().startsWith("mark")) {
+                String[] splitLine = line.split(" ");
+                int taskNumber = Integer.parseInt(splitLine[1]) - 1;
+                taskList[taskNumber].markAsComplete();
+                System.out.println("____________________________________________________________");
+                System.out.println("Task has been marked as done:");
+                taskList[taskNumber].printTask();
+                System.out.println("____________________________________________________________");
+                continue;
+            } else if (line.toLowerCase().startsWith("unmark")) {
+                String[] splitLine = line.split(" ");
+                int taskNumber = Integer.parseInt(splitLine[1]) - 1;
+                taskList[taskNumber].markAsIncomplete();
+                System.out.println("____________________________________________________________");
+                System.out.println("Task has been marked as incomplete:");
+                taskList[taskNumber].printTask();
                 System.out.println("____________________________________________________________");
                 continue;
             }
             System.out.println("____________________________________________________________");
             System.out.println("added: " + line);
             System.out.println("____________________________________________________________");
-            taskList[listIndex] = (listIndex + 1) + ". " + line;
+            taskList[listIndex] = new Task(line);
             listIndex++;
 
         }
