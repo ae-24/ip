@@ -7,20 +7,25 @@ public class Task {
         this.isCompleted = false;
     }
 
+    @Override
+    public String toString() {
+        return "[" + getStatusIcon() + "] " + description;
+    }
+
     public String getStatusIcon() {
         return (isCompleted ? "X" : " "); // mark done task with X
     }
 
-    public void markAsComplete(){
+    public void markAsComplete() {
         isCompleted = true;
     }
 
-    public void markAsIncomplete(){
+    public void markAsIncomplete() {
         isCompleted = false;
     }
 
     public void printTask() {
-        System.out.println("[" + getStatusIcon() + "] " + description);
+        System.out.println(this.toString());
     }
 
 }
