@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Echo {
 
     public static final String LINE_SEPARATOR = "____________________________________________________________";

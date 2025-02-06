@@ -18,15 +18,20 @@ public class InputManager {
                 break;
             } else if (line.equalsIgnoreCase("list")) {
                 taskManager.printTaskList();
-                continue;
             } else if (line.toLowerCase().startsWith("mark")) {
                 taskManager.markTaskAsComplete(line);
-                continue;
             } else if (line.toLowerCase().startsWith("unmark")) {
                 taskManager.markTaskAsIncomplete(line);
-                continue;
+            } else if (line.toLowerCase().startsWith("todo")) {
+                taskManager.addTodo(line);
+            } else if (line.toLowerCase().startsWith("deadline")) {
+                taskManager.addDeadline(line);
+            } else if (line.toLowerCase().startsWith("event")) {
+                taskManager.addEvent(line);
+            } else {
+                taskManager.addTask(line);
             }
-            taskManager.addTask(line);
+
 
         }
         in.close();

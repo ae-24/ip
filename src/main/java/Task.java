@@ -24,8 +24,4 @@ public class Task {
         isCompleted = false;
     }
 
-    public void printTask() {
-        System.out.println(this.toString());
-    }
-
 }
