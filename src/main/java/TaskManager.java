@@ -1,3 +1,5 @@
+import Task.*;
+import Exception.*;
 public class TaskManager {
     public static final String LINE_SEPARATOR = "____________________________________________________________";
 
@@ -28,12 +30,12 @@ public class TaskManager {
         if (taskCount == 0) {
             System.out.println("No tasks added. Please add a task first.");
         } else if (taskNumber < 0 || taskNumber >= taskCount) {
-            throw new InvalidInputException("Task number out of range.");
+            throw new InvalidInputException("Task.Task number out of range.");
         }
 
         taskList[taskNumber].markAsComplete();
         System.out.println(LINE_SEPARATOR);
-        System.out.println("Task has been marked as done:");
+        System.out.println("Task.Task has been marked as done:");
         System.out.println(taskList[taskNumber]);
         System.out.println(LINE_SEPARATOR);
     }
@@ -46,12 +48,12 @@ public class TaskManager {
         if (taskCount == 0) {
             System.out.println("No tasks added. Please add a task first.");
         } else if (taskNumber < 0 || taskNumber >= taskCount) {
-            throw new InvalidInputException("Task number out of range.");
+            throw new InvalidInputException("Task.Task number out of range.");
         }
 
         taskList[taskNumber].markAsIncomplete();
         System.out.println(LINE_SEPARATOR);
-        System.out.println("Task has been marked as incomplete:");
+        System.out.println("Task.Task has been marked as incomplete:");
         System.out.println(taskList[taskNumber]);
         System.out.println(LINE_SEPARATOR);
     }
