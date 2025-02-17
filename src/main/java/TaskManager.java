@@ -1,6 +1,7 @@
 import Task.*;
 import Exception.*;
 
+
 import java.util.ArrayList;
 
 public class TaskManager {
@@ -135,4 +136,20 @@ public class TaskManager {
         System.out.println("Now you have " + (taskList.size() - 1) + " tasks in the list.");
         System.out.println(LINE_SEPARATOR);
     }
+
+    public int getTaskCount() {
+        return taskList.size();
+    }
+
+    public String getTask(int i) {
+        return taskList.get(i).toString();
+    }
+
+    public void addTask(Task task) {
+        //taskList.add(task);
+        taskList.add(task);
+    }
+
+
+
 }
