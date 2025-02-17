@@ -32,6 +32,8 @@ public class InputManager {
                     taskManager.addEvent(line);
                 } else if (line.toLowerCase().startsWith("thanks") || line.toLowerCase().startsWith("thx")) {
                     System.out.println("haha you too");
+                } else if(line.toLowerCase().startsWith("delete")) {
+                    taskManager.deleteTask(line);
                 } else {
                     throw new InvalidInputException("Please try again with one of the valid commands:\nlist, todo, deadline, event, mark, unmark");
                 }
