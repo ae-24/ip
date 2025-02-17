@@ -1,15 +1,22 @@
+import java.io.IOException;
+
 public class Echo {
 
     public static final String LINE_SEPARATOR = "____________________________________________________________";
 
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
-        InputManager inputManager = new InputManager(taskManager);
+        FileManager fileManager = new FileManager(taskManager);
+        InputManager inputManager = new InputManager(taskManager, fileManager);
+
+
+
 
         printGreeting();
 
         inputManager.processInputLoop();
 
+        fileManager.updateSaveFile();
         printGoodbye();
     }
 

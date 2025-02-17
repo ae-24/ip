@@ -3,9 +3,11 @@ import Exception.*;
 
 public class InputManager {
     private final TaskManager taskManager;
+    private final FileManager fileManager;
 
-    public InputManager(TaskManager taskManager) {
+    public InputManager(TaskManager taskManager, FileManager fileManager) {
         this.taskManager = taskManager;
+        this.fileManager = fileManager;
     }
 
     public void processInputLoop() {
@@ -22,14 +24,19 @@ public class InputManager {
                     taskManager.printTaskList();
                 } else if (line.toLowerCase().startsWith("mark")) {
                     taskManager.markTaskAsComplete(line);
+                    fileManager.updateSaveFile();
                 } else if (line.toLowerCase().startsWith("unmark")) {
                     taskManager.markTaskAsIncomplete(line);
+                    fileManager.updateSaveFile();
                 } else if (line.toLowerCase().startsWith("todo")) {
                     taskManager.addTodo(line);
+                    fileManager.updateSaveFile();
                 } else if (line.toLowerCase().startsWith("deadline")) {
                     taskManager.addDeadline(line);
+                    fileManager.updateSaveFile();
                 } else if (line.toLowerCase().startsWith("event")) {
                     taskManager.addEvent(line);
+                    fileManager.updateSaveFile();
                 } else if (line.toLowerCase().startsWith("thanks") || line.toLowerCase().startsWith("thx")) {
                     System.out.println("haha you too");
                 } else {

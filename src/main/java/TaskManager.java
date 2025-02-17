@@ -1,5 +1,8 @@
 import Task.*;
 import Exception.*;
+
+import java.util.Arrays;
+
 public class TaskManager {
     public static final String LINE_SEPARATOR = "____________________________________________________________";
 
@@ -99,4 +102,21 @@ public class TaskManager {
         System.out.println("Now you have " + (taskCount + 1) + " tasks in the list.");
         System.out.println(LINE_SEPARATOR);
     }
+
+    public int getTaskCount() {
+        return taskCount;
+    }
+
+    public String getTask(int i) {
+        return taskList[i].toString();
+    }
+
+    public void addTask(Task task) {
+        //taskList.add(task);
+        taskList[taskCount] = task;
+        taskCount ++;
+    }
+
+
+
 }
