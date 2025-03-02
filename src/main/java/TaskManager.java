@@ -1,9 +1,17 @@
-import Task.*;
+import Task.Task;
+import Task.Todo;
+import Task.Deadline;
+import Task.Event;
 import Exception.*;
 
 
 import java.util.ArrayList;
 
+/**
+ * Manages tasks by storing, updating, and removing them.
+ * Provides functionality to add, mark, unmark, find, and delete tasks.
+ * Tasks can be of type Todo, Deadline, or Event.
+ */
 public class TaskManager {
     public static final String LINE_SEPARATOR = "____________________________________________________________";
 
@@ -13,6 +21,10 @@ public class TaskManager {
         taskList = new ArrayList<>();
     }
 
+    /**
+     * Prints the list of all tasks currently in the task list.
+     * If no tasks are present, a message indicating that no tasks have been added will be shown.
+     */
     public void printTaskList() {
         System.out.println(LINE_SEPARATOR);
         if (taskList.isEmpty()) {
@@ -26,6 +38,13 @@ public class TaskManager {
         System.out.println(LINE_SEPARATOR);
     }
 
+    /**
+     * Marks a task as complete based on the provided task number.
+     *
+     * @param line The input line containing the command, expected to be in the format: "mark <task number>"
+     * @throws NumberFormatException If the task number is not a valid integer.
+     * @throws InvalidInputException If the input is invalid or the task number is out of range.
+     */
     public void markTaskAsComplete(String line) throws NumberFormatException, InvalidInputException {
         if (line.length() < 6) {
             throw new InvalidInputException("Please enter a valid input. Use the format: mark <task number>");
@@ -48,6 +67,13 @@ public class TaskManager {
         System.out.println(LINE_SEPARATOR);
     }
 
+    /**
+     * Marks a task as incomplete based on the provided task number.
+     *
+     * @param line The input line containing the command, expected to be in the format: "unmark <task number>"
+     * @throws NumberFormatException If the task number is not a valid integer.
+     * @throws InvalidInputException If the input is invalid or the task number is out of range.
+     */
     public void markTaskAsIncomplete(String line) throws NumberFormatException, InvalidInputException {
         if (line.length() < 8) {
             throw new InvalidInputException("Please enter a valid input. Use the format: unmark <task number>");
@@ -70,6 +96,11 @@ public class TaskManager {
         System.out.println(LINE_SEPARATOR);
     }
 
+    /**
+     * Adds a Todo task to the task list.
+     *
+     * @param line The input line containing the command and description of the task.
+     */
     public void addTodo(String line) {
         String[] splitLine = line.split(" ", 2);
         String todoDescription = (splitLine.length > 1) ? splitLine[1] : ""; // If no description, use empty string
@@ -77,6 +108,12 @@ public class TaskManager {
         printTaskAddedMessage();
     }
 
+    /**
+     * Adds a Deadline task to the task list.
+     *
+     * @param line The input line containing the command and description, including the deadline.
+     * @throws IllegalFormatException If the deadline format is invalid.
+     */
     public void addDeadline(String line) throws IllegalFormatException {
         line = line.substring(9);
         String[] splitLine = line.split("/by", 2);  // Split into two parts: description and deadline
@@ -87,6 +124,12 @@ public class TaskManager {
         printTaskAddedMessage();
     }
 
+    /**
+     * Adds an Event task to the task list.
+     *
+     * @param line The input line containing the command, description, and time range.
+     * @throws IllegalFormatException If the event format or time range is invalid.
+     */
     public void addEvent(String line) throws IllegalFormatException {
         line = line.substring(6);
         String[] splitLine = line.split("/from", 2);  // Split into two parts: description and time range
@@ -101,6 +144,13 @@ public class TaskManager {
         printTaskAddedMessage();
     }
 
+    /**
+     * Deletes a task from the task list based on the provided task number.
+     *
+     * @param line The input line containing the command, expected to be in the format: "delete <task number>"
+     * @throws NumberFormatException If the task number is not a valid integer.
+     * @throws InvalidInputException If the input is invalid or the task number is out of range.
+     */
     public void deleteTask(String line) throws NumberFormatException, InvalidInputException {
         if (line.length() < 8) {
             throw new InvalidInputException("Please enter a valid input. Use the format: delete <task number>");
@@ -137,10 +187,21 @@ public class TaskManager {
         System.out.println(LINE_SEPARATOR);
     }
 
+    /**
+     * Returns the total number of tasks in the task list.
+     *
+     * @return The number of tasks in the task list.
+     */
     public int getTaskCount() {
         return taskList.size();
     }
 
+    /**
+     * Returns a string representation of a task at the specified index.
+     *
+     * @param i The index of the task.
+     * @return A string representation of the task at the specified index.
+     */
     public String getTask(int i) {
         return taskList.get(i).toString();
     }

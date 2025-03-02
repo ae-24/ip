@@ -1,6 +1,12 @@
 import java.util.Scanner;
-import Exception.*;
+import Exception.InvalidInputException;
+import Exception.IllegalFormatException;
 
+
+/**
+ * Manages user input by parsing commands and calling the corresponding actions.
+ * This class determines the appropriate command to run based on the given input.
+ */
 public class InputManager {
     private final TaskManager taskManager;
     private final FileManager fileManager;
@@ -10,6 +16,22 @@ public class InputManager {
         this.fileManager = fileManager;
     }
 
+    /**
+     * Continuously reads user input and processes commands.
+     * The loop terminates when the user inputs the "bye" command.
+     *
+     * Supported commands include:
+     * - list: Displays all tasks.
+     * - mark <task number>: Marks a task as complete.
+     * - unmark <task number>: Marks a task as incomplete.
+     * - todo <description>: Adds a Todo task.
+     * - deadline <description> /by <date>: Adds a Deadline task.
+     * - event <description> /from <start> /to <end>: Adds an Event task.
+     * - find <description>: Searches and returns a list of all tasks containing the description.
+     * - delete <task number>: Deletes a task.
+     *
+     * Any invalid input will result in an exception, which is caught and printed.
+     */
     public void processInputLoop() {
         String line;
         Scanner in = new Scanner(System.in);
