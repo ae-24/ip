@@ -1,4 +1,7 @@
-import Task.*;
+import Task.Task;
+import Task.Todo;
+import Task.Deadline;
+import Task.Event;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,10 +10,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
+/**
+ * Handles loading and saving of tasks to the computer's hard drive.
+ * Creates the necessary files if they do not exist and ensures task data persistence.
+ */
 public class FileManager {
     private final File data;
     private final TaskManager taskManager;
 
+    /**
+     * Constructs a FileManager with the given TaskManager.
+     * Initializes the file path to save tasks and attempts to load the save file
+     * if it already exists. If the file does not exist, it will create a new one.
+     *
+     * @param taskManager The TaskManager instance that manages tasks.
+     */
     public FileManager(TaskManager taskManager) {
         this.taskManager = taskManager;
         String homeDirectory = System.getProperty("user.home");
@@ -35,6 +49,13 @@ public class FileManager {
         }
     }
 
+    /**
+     * Loads tasks from the save file and adds them to the TaskManager.
+     * Each line in the file is processed to create a task of the appropriate type
+     * (Todo, Deadline, Event) and then adds it to the TaskManager.
+     *
+     * @throws FileNotFoundException If the save file is not found.
+     */
     public void loadSaveFile() throws FileNotFoundException {
         Scanner scanner = new Scanner(data);
         Task taskToAdd;
@@ -74,6 +95,13 @@ public class FileManager {
 
     }
 
+    /**
+     * Marks a task as complete if the task status is marked with 'X'.
+     * Adds the task to the TaskManager after processing the line.
+     *
+     * @param line       The line from the save file representing the task.
+     * @param taskToAdd  The task to be added to the TaskManager.
+     */
     private void markAndAddTask(String line, Task taskToAdd) {
         if (line.charAt(line.indexOf("[") + 4) == 'X') {
             taskToAdd.markAsComplete();
@@ -81,6 +109,10 @@ public class FileManager {
         taskManager.addTask(taskToAdd);
     }
 
+    /**
+     * Updates the save file with the current list of tasks in the TaskManager.
+     * Writes each task to the file in a readable format for later loading.
+     */
     public void updateSaveFile() {
         try (PrintWriter writer = new PrintWriter(data)) {
             for (int i = 0; i < taskManager.getTaskCount(); i++) {
