@@ -16,9 +16,11 @@ public class TaskManager {
     public static final String LINE_SEPARATOR = "____________________________________________________________";
 
     private final ArrayList<Task> taskList;
+    private final Ui ui;
 
-    public TaskManager() {
+    public TaskManager(Ui ui) {
         taskList = new ArrayList<>();
+        this.ui = ui;
     }
 
     /**
@@ -26,16 +28,7 @@ public class TaskManager {
      * If no tasks are present, a message indicating that no tasks have been added will be shown.
      */
     public void printTaskList() {
-        System.out.println(LINE_SEPARATOR);
-        if (taskList.isEmpty()) {
-            System.out.println("No tasks added");
-        } else {
-            for (Task task : taskList) {
-                System.out.print((taskList.indexOf(task) + 1) + ".");
-                System.out.println(task);
-            }
-        }
-        System.out.println(LINE_SEPARATOR);
+        ui.printList(taskList);
     }
 
     /**
@@ -105,7 +98,7 @@ public class TaskManager {
         String[] splitLine = line.split(" ", 2);
         String todoDescription = (splitLine.length > 1) ? splitLine[1] : ""; // If no description, use empty string
         taskList.add(new Todo(todoDescription));
-        printTaskAddedMessage();
+        ui.printTaskAddedMessage(taskList);
     }
 
     /**
@@ -124,7 +117,7 @@ public class TaskManager {
             throw new IllegalFormatException("Invalid deadline format. Please use the format: <description> /by <date>");
         }
         taskList.add(new Deadline(splitLine[0].trim(), splitLine[1].trim()));
-        printTaskAddedMessage();
+        ui.printTaskAddedMessage(taskList);
     }
 
     /**
@@ -147,7 +140,7 @@ public class TaskManager {
             throw new IllegalFormatException("Invalid event time format. Please use the format: /from <start> /to <end>");
         }
         taskList.add(new Event(splitLine[0].trim(), timeRange[0].trim(), timeRange[1].trim()));
-        printTaskAddedMessage();
+        ui.printTaskAddedMessage(taskList);
     }
 
     /**
@@ -175,25 +168,13 @@ public class TaskManager {
             throw new InvalidInputException("Task number out of range.");
         }
 
-        printTaskDeletedMessage(taskNumber);
+        ui.printTaskDeletedMessage(taskNumber,taskList);
         taskList.remove(taskNumber);
     }
 
-    private void printTaskAddedMessage() {
-        System.out.println(LINE_SEPARATOR);
-        System.out.println("Got it. I've added this task:");
-        System.out.println(taskList.get(taskList.size() - 1));
-        System.out.println("Now you have " + (taskList.size()) + " tasks in the list.");
-        System.out.println(LINE_SEPARATOR);
-    }
 
-    private void printTaskDeletedMessage(int i) {
-        System.out.println(LINE_SEPARATOR);
-        System.out.println("Noted. I've removed this task:");
-        System.out.println(taskList.get(i));
-        System.out.println("Now you have " + (taskList.size() - 1) + " tasks in the list.");
-        System.out.println(LINE_SEPARATOR);
-    }
+
+
 
     /**
      * Returns the total number of tasks in the task list.
