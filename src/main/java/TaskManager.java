@@ -50,15 +50,7 @@ public class TaskManager {
             throw new InvalidInputException("Please enter a valid input. Use the format: mark <task number>");
         }
 
-        String[] splitLine = line.split(" ");
-        int taskNumber;
-        taskNumber = Integer.parseInt(splitLine[1]) - 1;
-
-        if (taskList.isEmpty()) {
-            throw new InvalidInputException("No tasks added. Please add a task first.");
-        } else if (taskNumber < 0 || taskNumber >= taskList.size()) {
-            throw new InvalidInputException("Task number out of range.");
-        }
+        int taskNumber = getTaskNumber(line, "Please enter a valid input. Use the format: mark <task number>");
 
         taskList.get(taskNumber).markAsComplete();
         System.out.println(LINE_SEPARATOR);
@@ -79,7 +71,20 @@ public class TaskManager {
             throw new InvalidInputException("Please enter a valid input. Use the format: unmark <task number>");
         }
 
+        int taskNumber = getTaskNumber(line, "Please enter a valid input. Use the format: unmark <task number>");
+
+        taskList.get(taskNumber).markAsIncomplete();
+        System.out.println(LINE_SEPARATOR);
+        System.out.println("Task has been marked as incomplete:");
+        System.out.println(taskList.get(taskNumber));
+        System.out.println(LINE_SEPARATOR);
+    }
+
+    private int getTaskNumber(String line, String message) throws InvalidInputException {
         String[] splitLine = line.split(" ");
+        if (splitLine.length < 2) {
+            throw new InvalidInputException(message);
+        }
         int taskNumber;
         taskNumber = Integer.parseInt(splitLine[1]) - 1;
 
@@ -88,12 +93,7 @@ public class TaskManager {
         } else if (taskNumber < 0 || taskNumber >= taskList.size()) {
             throw new InvalidInputException("Task number out of range.");
         }
-
-        taskList.get(taskNumber).markAsIncomplete();
-        System.out.println(LINE_SEPARATOR);
-        System.out.println("Task has been marked as incomplete:");
-        System.out.println(taskList.get(taskNumber));
-        System.out.println(LINE_SEPARATOR);
+        return taskNumber;
     }
 
     /**
@@ -114,7 +114,10 @@ public class TaskManager {
      * @param line The input line containing the command and description, including the deadline.
      * @throws IllegalFormatException If the deadline format is invalid.
      */
-    public void addDeadline(String line) throws IllegalFormatException {
+    public void addDeadline(String line) throws IllegalFormatException, InvalidInputException {
+        if (line.length() < 9) {
+            throw new InvalidInputException("Please enter a valid input. Use the format: deadline <description> /by <date>");
+        }
         line = line.substring(9);
         String[] splitLine = line.split("/by", 2);  // Split into two parts: description and deadline
         if (splitLine.length < 2) {
@@ -130,7 +133,10 @@ public class TaskManager {
      * @param line The input line containing the command, description, and time range.
      * @throws IllegalFormatException If the event format or time range is invalid.
      */
-    public void addEvent(String line) throws IllegalFormatException {
+    public void addEvent(String line) throws IllegalFormatException, InvalidInputException {
+        if (line.length() < 6) {
+            throw new InvalidInputException("Please enter a valid input. Use the format: event <description> /from <start> /to <end>");
+        }
         line = line.substring(6);
         String[] splitLine = line.split("/from", 2);  // Split into two parts: description and time range
         if (splitLine.length < 2) {
@@ -151,7 +157,7 @@ public class TaskManager {
      * @throws NumberFormatException If the task number is not a valid integer.
      * @throws InvalidInputException If the input is invalid or the task number is out of range.
      */
-    public void deleteTask(String line) throws NumberFormatException, InvalidInputException {
+    public void deleteTask(String line) throws NumberFormatException, InvalidInputException, ArrayIndexOutOfBoundsException {
         if (line.length() < 8) {
             throw new InvalidInputException("Please enter a valid input. Use the format: delete <task number>");
         }
@@ -159,8 +165,10 @@ public class TaskManager {
         String[] splitLine = line.split(" ");
 
         int taskNumber;
+        if (splitLine.length < 2) {
+            throw new InvalidInputException("Please enter a valid input. Use the format: delete <task number>");
+        }
         taskNumber = Integer.parseInt(splitLine[1]) - 1;
-
         if (taskList.isEmpty()) {
             throw new InvalidInputException("No tasks added. Nothing to remove.");
         } else if (taskNumber < 0 || taskNumber >= taskList.size()) {
@@ -211,6 +219,36 @@ public class TaskManager {
         taskList.add(task);
     }
 
+    public void find(String line) throws InvalidInputException {
+        if (line.length() < 5) {
+            throw new InvalidInputException("Please enter a valid input. Use the format: find <description>");
+        }
+        String[] splitLine = line.split(" ", 2);
+        if (splitLine.length < 2) {
+            throw new InvalidInputException("Please enter a valid input. Use the format: find <description>");
+        }
 
+        ArrayList<Task> foundTasks = new ArrayList<>();
+        for (Task task : taskList) {
+            if (task.getDescription().toLowerCase().contains(splitLine[1].toLowerCase())) {
+                foundTasks.add(task);
+            }
+        }
+        if (foundTasks.isEmpty()) {
+            System.out.println("No matching tasks found.");
+        } else {
+            printList(foundTasks);
+        }
+    }
+
+    private static void printList(ArrayList<Task> foundTasks) {
+        System.out.println(LINE_SEPARATOR);
+        System.out.println("Here are the matching tasks in your list:");
+        for (Task task : foundTasks) {
+            System.out.print((foundTasks.indexOf(task) + 1) + ".");
+            System.out.println(task);
+        }
+        System.out.println(LINE_SEPARATOR);
+    }
 
 }

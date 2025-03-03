@@ -63,8 +63,10 @@ public class InputManager {
                     System.out.println("haha you too");
                 } else if(line.toLowerCase().startsWith("delete")) {
                     taskManager.deleteTask(line);
+                } else if (line.toLowerCase().startsWith("find")) {
+                    taskManager.find(line);
                 } else {
-                    throw new InvalidInputException("Please try again with one of the valid commands:\nlist, todo, deadline, event, mark, unmark");
+                    throw new InvalidInputException("Please try again with one of the valid commands:\nlist, todo, deadline, event, mark, unmark, delete, find, bye");
                 }
             } catch (IllegalFormatException e) {
                 e.print();
