@@ -13,7 +13,6 @@ import java.util.ArrayList;
  * Tasks can be of type Todo, Deadline, or Event.
  */
 public class TaskManager {
-    public static final String LINE_SEPARATOR = "____________________________________________________________";
 
     private final ArrayList<Task> taskList;
     private final Ui ui;
@@ -46,10 +45,7 @@ public class TaskManager {
         int taskNumber = getTaskNumber(line, "Please enter a valid input. Use the format: mark <task number>");
 
         taskList.get(taskNumber).markAsComplete();
-        System.out.println(LINE_SEPARATOR);
-        System.out.println("Task has been marked as done:");
-        System.out.println(taskList.get(taskNumber));
-        System.out.println(LINE_SEPARATOR);
+        ui.printMarkAndUnmark(taskList, taskNumber, "Task has been marked as done:");
     }
 
     /**
@@ -67,10 +63,7 @@ public class TaskManager {
         int taskNumber = getTaskNumber(line, "Please enter a valid input. Use the format: unmark <task number>");
 
         taskList.get(taskNumber).markAsIncomplete();
-        System.out.println(LINE_SEPARATOR);
-        System.out.println("Task has been marked as incomplete:");
-        System.out.println(taskList.get(taskNumber));
-        System.out.println(LINE_SEPARATOR);
+        ui.printMarkAndUnmark(taskList, taskNumber, "Task has been marked as incomplete:");
     }
 
     private int getTaskNumber(String line, String message) throws InvalidInputException {
@@ -168,13 +161,9 @@ public class TaskManager {
             throw new InvalidInputException("Task number out of range.");
         }
 
-        ui.printTaskDeletedMessage(taskNumber,taskList);
+        ui.printTaskDeletedMessage(taskNumber, taskList);
         taskList.remove(taskNumber);
     }
-
-
-
-
 
     /**
      * Returns the total number of tasks in the task list.
@@ -196,10 +185,15 @@ public class TaskManager {
     }
 
     public void addTask(Task task) {
-        //taskList.add(task);
         taskList.add(task);
     }
 
+    /**
+     * Searches for tasks in the task list that contain the specified keyword.
+     *
+     * @param line The input string containing the search command and keyword.
+     * @throws InvalidInputException If the input format is incorrect or the keyword is missing.
+     */
     public void find(String line) throws InvalidInputException {
         if (line.length() < 5) {
             throw new InvalidInputException("Please enter a valid input. Use the format: find <description>");
@@ -215,21 +209,7 @@ public class TaskManager {
                 foundTasks.add(task);
             }
         }
-        if (foundTasks.isEmpty()) {
-            System.out.println("No matching tasks found.");
-        } else {
-            printList(foundTasks);
-        }
-    }
-
-    private static void printList(ArrayList<Task> foundTasks) {
-        System.out.println(LINE_SEPARATOR);
-        System.out.println("Here are the matching tasks in your list:");
-        for (Task task : foundTasks) {
-            System.out.print((foundTasks.indexOf(task) + 1) + ".");
-            System.out.println(task);
-        }
-        System.out.println(LINE_SEPARATOR);
+        ui.printFoundTasks(foundTasks);
     }
 
 }

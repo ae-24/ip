@@ -75,8 +75,6 @@ public class InputManager {
             } catch (InvalidInputException e) {
                 e.print();
             }
-
-
         }
         in.close();
     }
